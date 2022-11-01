@@ -6,10 +6,9 @@
 {% block content %}
     <h3>Store</h3>
     <div class="row">
-        
-        {% for item in  items%}
+        {% for item in items %}
             <div class="col-lg-4">
-                <img class="thumbnail" src="{% static 'images/placeholder.png' %}" alt="">
+                <img class="thumbnail" src="{{ item.imageUrl}}" alt="">
                 <div class="box-element product">
                     <h6><strong>{{item.name}}</strong></h6>
                     <hr>
