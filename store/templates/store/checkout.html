@@ -55,18 +55,18 @@
                  <hr>
                  <h3>Order Summary</h3>
                  <hr>
-
-                 <div class="cart-row">
-
-                    <div style="flex: 2;"><img class="row-image" src="{% static 'images/placeholder.png' %}" alt=""></div>
-                    <div style="flex: 2;">Product</div>
-                    <div style="flex: 1;">$20</div>
-                    <div style="flex: 1;">x2</div>
+                {% for item in allOrder %}
+                    <div class="cart-row">
+                        <div style="flex: 2;"><img class="row-image" src="{{item.product.imageUrl}}" alt=""></div>
+                        <div style="flex: 2;">{{item.product.name}}</div>
+                        <div style="flex: 1;">${{item.product.price|floatformat:2}}</div>
+                        <div style="flex: 1;">x{{item.quantity}}</div>
+                    
+                    </div>
+                {% endfor %}
                 
-                </div>
-                
-                <h5>Items: 2</h5>
-                <h5>Total: $40</h5>
+                <h5>Items: {{order.get_total_item}}</h5>
+                <h5>Total: ${{order.get_total_price|floatformat:2}}</h5>
 
             </div>
         </div>
