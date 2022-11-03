@@ -48,7 +48,13 @@ def updateStore(request):
     data = json.loads(request.body)
     productId = data["productId"]
     action = data["action"]
-    print("productId: {}, {}".format(productId , action))
+
+
+    customer = request.user.customer
+    product = Product.objects.get(id=productId)
+    print(product.name)
+
+
     return JsonResponse("cart updated", safe=False)
 
 
