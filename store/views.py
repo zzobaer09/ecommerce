@@ -23,6 +23,7 @@ def store(request):
     context = {
         "items":products_all_obj,
         "cartTotal": cartItem,
+        "shipping":False,
     }
     return render(request , "store/store.html" , context)
 
@@ -37,7 +38,8 @@ def cart(request):
         orderItem = []
         order = {
             "get_total_item":0,
-            "get_total_price":0
+            "get_total_price":0,
+            "shipping":False,
         }
         cartItem = 0
 
@@ -57,7 +59,8 @@ def checkout(request):
         orderItem = []
         order = {
             "get_total_item":0,
-            "get_total_price":0
+            "get_total_price":0,
+            "shipping":False,
         }
         cartItem = 0
 

@@ -71,5 +71,11 @@
             </div>
         </div>
     </div>
-
+    
+    <script>
+        const shipping_ = "{{order.shipping}}"
+        if (shipping_ == "False"){
+            document.getElementById("shipping-info").innerHTML = " "
+        }
+    </script>
 {% endblock %}
