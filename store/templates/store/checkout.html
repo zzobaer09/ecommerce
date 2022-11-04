@@ -38,7 +38,7 @@
                     </div>
 
                     <hr>
-                    <input type="text" id="form-button" class="btn btn-success btn-block" value="Continue">
+                    <input type="submit" id="form-button" class="btn btn-success btn-block"  value="Continue">
 
                 </form>
             </div>
@@ -46,6 +46,7 @@
 
             <div class="box-element hidden" id="payment-info">
                 <small>Paypal</small>
+                <button id="make-payment">Make Payment</button>
             </div>
         </div>
 
@@ -77,5 +78,14 @@
         if (shipping_ == "False"){
             document.getElementById("shipping-info").innerHTML = " "
         }
+
+        const form_ = document.getElementById("form")
+        form_.addEventListener("submit" , function (e) {
+            e.preventDefault()
+            console.log("submited");
+            document.getElementById("form-button").classList.add("hidden")
+            document.getElementById("payment-info").classList.remove("hidden")
+
+        })
     </script>
 {% endblock %}
