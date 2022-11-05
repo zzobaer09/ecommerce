@@ -75,25 +75,63 @@
     
     <script>
         const shipping_ = "{{order.shipping}}"
+        const form_ = document.getElementById("form")
+        const total_price = "{{order.get_total_price|floatformat:2}}"
+
         if (shipping_ == "False"){
             document.getElementById("shipping-info").innerHTML = ""
         }
-
-        const form_ = document.getElementById("form")
+        // trigger when submited
         form_.addEventListener("submit" , function (e) {
             e.preventDefault()
             console.log("submited");
             document.getElementById("form-button").classList.add("hidden")
             document.getElementById("payment-info").classList.remove("hidden")
         })
-        
+
+        // triggers after payment
         document.getElementById("make-payment").addEventListener("click" , function() {
             submitFormData()
         })
+
         function submitFormData() {
             console.log("pyment completed");
+
+            // user data
+            let user_form_data = {
+                "name": null,
+                "email": null, 
+                "total": total_price,
+            }
+
+            // shipping address
+            let shippingInfo = {
+                "address": null,
+                "city": null, 
+                "state": null,
+                "zipcode": null,
+            }
+
+            if(shipping_ != "False"){
+                shippingInfo.address = form_.address.value
+                shippingInfo.city = form_.city.value
+                shippingInfo.state = form_.state.value
+                shippingInfo.zipcode = form_.zipcode.value
+
+            }
+
+            if(user == "AnonymousUser"){
+                user_form_data.name = form_.name.value
+                user_form_data.email = form_.email.value
+            }
+
+            // console.log(user_form_data);
+            // console.log(shippingInfo);
+
         }
 
+
+        // when to form activate
         if(user!="AnonymousUser"){
             document.getElementById("user-info").innerHTML = ""
 
@@ -103,5 +141,7 @@
             document.getElementById("form-wrapper").classList.add("hidden")
             document.getElementById("payment-info").classList.remove("hidden")
         }
+
+
     </script>
 {% endblock %}
