@@ -6,7 +6,7 @@
         <div class="col-lg-6">
             <div class="box-element" id="form-wrapper">
                 <form id="form">
-                    <div id="#user-info">
+                    <div id="user-info">
                         <div class="form-field">
                             <input required class="form-control" name="name" placeholder="Name..." type="text">
                         </div>
@@ -76,7 +76,7 @@
     <script>
         const shipping_ = "{{order.shipping}}"
         if (shipping_ == "False"){
-            document.getElementById("shipping-info").innerHTML = " "
+            document.getElementById("shipping-info").innerHTML = ""
         }
 
         const form_ = document.getElementById("form")
@@ -92,6 +92,16 @@
         })
         function submitFormData() {
             console.log("pyment completed");
+        }
+
+        if(user!="AnonymousUser"){
+            document.getElementById("user-info").innerHTML = ""
+
+        }
+        // not Anonymous
+        if(user != "AnonymousUser" && shipping_ == "False"){
+            document.getElementById("form-wrapper").classList.add("hidden")
+            document.getElementById("payment-info").classList.remove("hidden")
         }
     </script>
 {% endblock %}
