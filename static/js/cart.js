@@ -12,7 +12,7 @@ for (let item of allbtn){
 	})
 }
 
-
+ 
 
 
 function updateCart(productId , action) {
