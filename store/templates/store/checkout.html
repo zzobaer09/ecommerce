@@ -91,7 +91,7 @@
 
         // triggers after payment
         document.getElementById("make-payment").addEventListener("click" , function() {
-            submitFormData()
+            // submitFormData()
         })
 
         function submitFormData() {
@@ -127,7 +127,21 @@
 
             // console.log(user_form_data);
             // console.log(shippingInfo);
-
+            const URL = "/process_order/"
+            fetch(URL , {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrftoken,
+                },
+                body: JSON.stringify({"UserData":user_form_data , "shippingInfo":shippingInfo})
+            })
+            .then(request=> request.json())
+            .then(data=>{
+                console.log(data)
+                alert("Transaction Complete")
+                window.location.href = "{% url store %}"
+            })
         }
 
 
@@ -141,7 +155,7 @@
             document.getElementById("form-wrapper").classList.add("hidden")
             document.getElementById("payment-info").classList.remove("hidden")
         }
-
+        
 
     </script>
 {% endblock %}
