@@ -7,5 +7,5 @@ urlpatterns = [
 
     # other urls
     path("update_store/" , views.updateStore , name="updateStore"),
-    # path("process_order/" , views.processOrder , name="processOrder"),
+    path("process_order/" , views.processOrder , name="processOrder"),
 ]
