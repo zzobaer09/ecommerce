@@ -93,3 +93,9 @@ def updateStore(request):
 
 
 
+def processOrder(request):
+    data = json.loads(request.body)
+    print(data)
+    return JsonResponse("hello world" , safe=False)
+
+
