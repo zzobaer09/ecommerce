@@ -76,7 +76,7 @@
     <script>
         const shipping_ = "{{order.shipping}}"
         const form_ = document.getElementById("form")
-        const total_price = "{{order.get_total_price|floatformat:2}}"
+        const total_price = "{{order.get_total_price}}"
 
         if (shipping_ == "False"){
             document.getElementById("shipping-info").innerHTML = ""
