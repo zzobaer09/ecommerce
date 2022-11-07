@@ -91,7 +91,7 @@
 
         // triggers after payment
         document.getElementById("make-payment").addEventListener("click" , function() {
-            // submitFormData()
+            submitFormData()
         })
 
         function submitFormData() {
@@ -125,8 +125,10 @@
                 user_form_data.email = form_.email.value
             }
 
-            // console.log(user_form_data);
-            // console.log(shippingInfo);
+            
+            
+            
+            
             const URL = "/process_order/"
             fetch(URL , {
                 method: "POST",
@@ -140,11 +142,16 @@
             .then(data=>{
                 console.log(data)
                 alert("Transaction Complete")
-                window.location.href = "{% url store %}"
+                window.location.href = "{% url 'store' %}"
             })
+
+
+            // function end
         }
 
 
+
+        
         // when to form activate
         if(user!="AnonymousUser"){
             document.getElementById("user-info").innerHTML = ""
