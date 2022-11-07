@@ -96,6 +96,7 @@ def updateStore(request):
 
 def processOrder(request):
     data = json.loads(request.body)
+    __shipping__ = data["shippingInfo"]
     transaction_id = datetime.datetime.now().timestamp()
 
     if request.user.is_authenticated:
@@ -105,9 +106,17 @@ def processOrder(request):
         order.transaction_id = transaction_id
         if total == order.get_total_price:
             order.complete = True
-        
         order.save()
 
+        if order.shipping == True:
+            ShippingAddress.objects.create(
+                customer = customer,
+                order=order,
+                address=__shipping__["address"],
+                city=__shipping__["city"],
+                state=__shipping__["state"],
+                zipcode=__shipping__["zipcode"],
+            )
         
     else:
         print("login plz")
