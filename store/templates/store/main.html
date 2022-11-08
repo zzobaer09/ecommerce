@@ -3,34 +3,54 @@
 {% load static %}
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ecom</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ecom</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
-    <script type="text/javascript">
-      var user = "{{request.user}}"
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <script type="text/javascript">
 
-      function getToken(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
+    var user = "{{request.user}}"
+
+    function getToken(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
       }
       return cookieValue;
-  }
+    }
   const csrftoken = getToken('csrftoken');
-    </script>
+
+  function getCookie(name){
+    var cookieArr = document.cookie.split(";");
+    for (var i = 0; i < cookieArr.length; i++){
+      var cookiePair = cookieArr[i].split("=");
+
+      if(name == cookiePair[0].trim()){
+        return decodeURIComponent(cookiePair[1])
+      }
+    }
+    return null
+  }
+  var cart = JSON.parse(getCookie('cart'))
+  if(cart == undefined){
+    cart = {}
+    document.cookie = "cart=" + JSON.stringify(cart)+ ";domain=;path=/"
+    console.log("cookie created");
+  }
+  console.log("Cart: ", cart)
+  </script>
 
 </head>
 <body>
