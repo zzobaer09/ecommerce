@@ -3,7 +3,7 @@ const allbtn = document.getElementsByClassName("update-btn")
 for (let item of allbtn){
 	item.addEventListener("click" , function() {
 		if (user == "AnonymousUser"){
-			console.log("log in");
+			addCookieItem(1,2)
 		}else{
 			const productId = this.dataset.productid
 			const action = this.dataset.action
@@ -13,6 +13,10 @@ for (let item of allbtn){
 }
 
  
+function addCookieItem(productId , action) {
+	console.log("you are not loged in");
+	console.log("USER:" , user);
+}
 
 
 function updateCart(productId , action) {
