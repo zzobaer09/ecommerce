@@ -2,11 +2,11 @@ const allbtn = document.getElementsByClassName("update-btn")
 
 for (let item of allbtn){
 	item.addEventListener("click" , function() {
+		const productId = this.dataset.productid
+		const action = this.dataset.action
 		if (user == "AnonymousUser"){
-			addCookieItem(1,2)
+			addCookieItem(productId , action)
 		}else{
-			const productId = this.dataset.productid
-			const action = this.dataset.action
 			updateCart(productId , action)
 		}
 	})
@@ -14,8 +14,21 @@ for (let item of allbtn){
 
  
 function addCookieItem(productId , action) {
-	console.log("you are not loged in");
-	console.log("USER:" , user);
+	if(action == "add"){
+		if (cart[productId]==undefined){
+			cart[productId] = {"quantity":1}
+		}else{
+			cart[productId]["quantity"]+=1
+		}
+	}
+	if(action=="remove"){
+		cart[productId] -= 1
+		if (cart[productId]<=0){
+			delete cart[productId]
+		}
+	}
+    document.cookie = "cart=" + JSON.stringify(cart)+ ";domain=;path=/"
+	location.reload()
 }
 
 
