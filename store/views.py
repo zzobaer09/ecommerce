@@ -3,17 +3,18 @@ from .models import *
 from django.http import JsonResponse
 import json
 import datetime
-from .utils import cartCookies
+from .utils import cartCookies , cartData
 
 # Create your views here.
 
 
 def store(request):
     if request.user.is_authenticated:
-        customer = request.user.customer
-        order,create  = Order.objects.get_or_create(customer=customer , complete=False)
-        orderItem = order.orderitem_set.all()
-        cartItem = order.get_total_item
+        cart_cookies = cartData(request)
+        orderItem = cart_cookies["allOrder"]
+        order = cart_cookies["order"]
+        cartItem = cart_cookies["cartTotal"]
+
     else: 
         cart_cookies = cartCookies(request)
         cartItem = cart_cookies["cartTotal"]
@@ -28,11 +29,10 @@ def store(request):
 
 def cart(request):
     if request.user.is_authenticated:
-        customer = request.user.customer
-        order,create  = Order.objects.get_or_create(customer=customer , complete=False)
-        orderItem = order.orderitem_set.all()
-        cartItem = order.get_total_item
-
+        cart_cookies = cartData(request)
+        orderItem = cart_cookies["allOrder"]
+        order = cart_cookies["order"]
+        cartItem = cart_cookies["cartTotal"]
     else: 
         cart_cookies = cartCookies(request)
         orderItem = cart_cookies["allOrder"]
@@ -45,10 +45,10 @@ def cart(request):
 
 def checkout(request):
     if request.user.is_authenticated:
-        customer = request.user.customer
-        order,create  = Order.objects.get_or_create(customer=customer , complete=False)
-        orderItem = order.orderitem_set.all()
-        cartItem = order.get_total_item
+        cart_cookies = cartData(request)
+        orderItem = cart_cookies["allOrder"]
+        order = cart_cookies["order"]
+        cartItem = cart_cookies["cartTotal"]
 
     else: 
         cart_cookies = cartCookies(request)

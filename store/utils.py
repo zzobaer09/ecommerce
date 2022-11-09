@@ -39,3 +39,10 @@ def cartCookies(request):
             pass
     return {"allOrder":orderItem , "order":order , "cartTotal":cartItem}
     
+
+def cartData(request):
+    customer = request.user.customer
+    order,create  = Order.objects.get_or_create(customer=customer , complete=False)
+    orderItem = order.orderitem_set.all()
+    cartItem = order.get_total_item
+    return {"allOrder":orderItem , "order":order , "cartTotal":cartItem}
