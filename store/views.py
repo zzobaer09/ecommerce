@@ -3,23 +3,22 @@ from .models import *
 from django.http import JsonResponse
 import json
 import datetime
+from .utils import cartCookies , cartData
 
 # Create your views here.
 
 
 def store(request):
     if request.user.is_authenticated:
-        customer = request.user.customer
-        order,create  = Order.objects.get_or_create(customer=customer , complete=False)
-        orderItem = order.orderitem_set.all()
-        cartItem = order.get_total_item
+        cart_cookies = cartData(request)
+        orderItem = cart_cookies["allOrder"]
+        order = cart_cookies["order"]
+        cartItem = cart_cookies["cartTotal"]
+
     else: 
-        orderItem = []
-        order = {
-            "get_total_item":0,
-            "get_total_price":0
-        }
-        cartItem = 0
+        cart_cookies = cartCookies(request)
+        cartItem = cart_cookies["cartTotal"]
+
     products_all_obj = Product.objects.all()
     context = {
         "items":products_all_obj,
@@ -30,40 +29,32 @@ def store(request):
 
 def cart(request):
     if request.user.is_authenticated:
-        customer = request.user.customer
-        order,create  = Order.objects.get_or_create(customer=customer , complete=False)
-        orderItem = order.orderitem_set.all()
-        cartItem = order.get_total_item
-
+        cart_cookies = cartData(request)
+        orderItem = cart_cookies["allOrder"]
+        order = cart_cookies["order"]
+        cartItem = cart_cookies["cartTotal"]
     else: 
-        orderItem = []
-        order = {
-            "get_total_item":0,
-            "get_total_price":0,
-            "shipping":False,
-        }
-        cartItem = 0
+        cart_cookies = cartCookies(request)
+        orderItem = cart_cookies["allOrder"]
+        order = cart_cookies["order"]
+        cartItem = cart_cookies["cartTotal"]
 
-        
     context = {"allOrder":orderItem, "order":order,"cartTotal": cartItem,}
     return render(request , "store/cart.html" , context)
 
 
 def checkout(request):
     if request.user.is_authenticated:
-        customer = request.user.customer
-        order,create  = Order.objects.get_or_create(customer=customer , complete=False)
-        orderItem = order.orderitem_set.all()
-        cartItem = order.get_total_item
+        cart_cookies = cartData(request)
+        orderItem = cart_cookies["allOrder"]
+        order = cart_cookies["order"]
+        cartItem = cart_cookies["cartTotal"]
 
     else: 
-        orderItem = []
-        order = {
-            "get_total_item":0,
-            "get_total_price":0,
-            "shipping":False,
-        }
-        cartItem = 0
+        cart_cookies = cartCookies(request)
+        orderItem = cart_cookies["allOrder"]
+        order = cart_cookies["order"]
+        cartItem = cart_cookies["cartTotal"]
 
     context = {"allOrder":orderItem, "order":order,"cartTotal":cartItem,}
     return render(request , "store/checkout.html" , context)

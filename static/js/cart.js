@@ -2,17 +2,34 @@ const allbtn = document.getElementsByClassName("update-btn")
 
 for (let item of allbtn){
 	item.addEventListener("click" , function() {
+		const productId = this.dataset.productid
+		const action = this.dataset.action
 		if (user == "AnonymousUser"){
-			console.log("log in");
+			addCookieItem(productId , action)
 		}else{
-			const productId = this.dataset.productid
-			const action = this.dataset.action
 			updateCart(productId , action)
 		}
 	})
 }
 
  
+function addCookieItem(productId , action) {
+	if(action == "add"){
+		if (cart[productId]==undefined){
+			cart[productId] = {"quantity":1}
+		}else{
+			cart[productId]["quantity"]+=1
+		}
+	}
+	if(action=="remove"){
+		cart[productId]["quantity"] -= 1
+		if (cart[productId]["quantity"]<=0){
+			delete cart[productId]
+		}
+	}
+    document.cookie = "cart=" + JSON.stringify(cart)+ ";domain=;path=/"
+	location.reload()
+}
 
 
 function updateCart(productId , action) {
