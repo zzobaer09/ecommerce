@@ -3,6 +3,7 @@ from .models import *
 from django.http import JsonResponse
 import json
 import datetime
+from .utils import cartCookies
 
 # Create your views here.
 
@@ -14,12 +15,9 @@ def store(request):
         orderItem = order.orderitem_set.all()
         cartItem = order.get_total_item
     else: 
-        orderItem = []
-        order = {
-            "get_total_item":0,
-            "get_total_price":0
-        }
-        cartItem = 0
+        cart_cookies = cartCookies(request)
+        cartItem = cart_cookies["cartTotal"]
+
     products_all_obj = Product.objects.all()
     context = {
         "items":products_all_obj,
@@ -36,42 +34,11 @@ def cart(request):
         cartItem = order.get_total_item
 
     else: 
-        try:
-            cart_cookie = json.loads(request.COOKIES["cart"])
-        except: cart_cookie = {}
-        print(cart_cookie)
-        orderItem = []
-        order = {
-            "get_total_item":0,
-            "get_total_price":0,
-            "shipping":False,
-        }
-        cartItem = order["get_total_item"]
+        cart_cookies = cartCookies(request)
+        orderItem = cart_cookies["allOrder"]
+        order = cart_cookies["order"]
+        cartItem = cart_cookies["cartTotal"]
 
-        for i in cart_cookie:
-            try:
-                cartItem += cart_cookie[i]["quantity"]
-
-                product = Product.objects.get(id=i)
-                total = product.price * cart_cookie[i]["quantity"]
-                order["get_total_price"] +=  total
-                order["get_total_item"] += cart_cookie[i]["quantity"]
-                item = {
-                    "product":{
-                        "id": product.id,
-                        "name": product.name,
-                        "price": product.price,
-                        "imageUrl": product.imageUrl
-                    },
-                    "quantity": cart_cookie[i]["quantity"],
-                    "get_total": total,
-                }
-                orderItem.append(item)
-                if product.digital == False:
-                    order["shipping"] = True
-            except:
-                pass
-        
     context = {"allOrder":orderItem, "order":order,"cartTotal": cartItem,}
     return render(request , "store/cart.html" , context)
 
@@ -84,13 +51,10 @@ def checkout(request):
         cartItem = order.get_total_item
 
     else: 
-        orderItem = []
-        order = {
-            "get_total_item":0,
-            "get_total_price":0,
-            "shipping":False,
-        }
-        cartItem = 0
+        cart_cookies = cartCookies(request)
+        orderItem = cart_cookies["allOrder"]
+        order = cart_cookies["order"]
+        cartItem = cart_cookies["cartTotal"]
 
     context = {"allOrder":orderItem, "order":order,"cartTotal":cartItem,}
     return render(request , "store/checkout.html" , context)
