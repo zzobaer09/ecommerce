@@ -41,8 +41,15 @@ def cartCookies(request):
     
 
 def cartData(request):
-    customer = request.user.customer
-    order,create  = Order.objects.get_or_create(customer=customer , complete=False)
-    orderItem = order.orderitem_set.all()
-    cartItem = order.get_total_item
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        order,create  = Order.objects.get_or_create(customer=customer , complete=False)
+        orderItem = order.orderitem_set.all()
+        cartItem = order.get_total_item
+    else: 
+        cart_cookies = cartCookies(request)
+        orderItem = cart_cookies["allOrder"]
+        order = cart_cookies["order"]
+        cartItem = cart_cookies["cartTotal"]
+        
     return {"allOrder":orderItem , "order":order , "cartTotal":cartItem}

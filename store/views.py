@@ -9,15 +9,11 @@ from .utils import cartCookies , cartData
 
 
 def store(request):
-    if request.user.is_authenticated:
-        cart_cookies = cartData(request)
-        orderItem = cart_cookies["allOrder"]
-        order = cart_cookies["order"]
-        cartItem = cart_cookies["cartTotal"]
+    data = cartData(request)
+    orderItem = data["allOrder"]
+    order = data["order"]
+    cartItem = data["cartTotal"]
 
-    else: 
-        cart_cookies = cartCookies(request)
-        cartItem = cart_cookies["cartTotal"]
 
     products_all_obj = Product.objects.all()
     context = {
@@ -28,38 +24,30 @@ def store(request):
     return render(request , "store/store.html" , context)
 
 def cart(request):
-    if request.user.is_authenticated:
-        cart_cookies = cartData(request)
-        orderItem = cart_cookies["allOrder"]
-        order = cart_cookies["order"]
-        cartItem = cart_cookies["cartTotal"]
-    else: 
-        cart_cookies = cartCookies(request)
-        orderItem = cart_cookies["allOrder"]
-        order = cart_cookies["order"]
-        cartItem = cart_cookies["cartTotal"]
+    data = cartData(request)
+    orderItem = data["allOrder"]
+    order = data["order"]
+    cartItem = data["cartTotal"]
 
     context = {"allOrder":orderItem, "order":order,"cartTotal": cartItem,}
     return render(request , "store/cart.html" , context)
 
 
 def checkout(request):
-    if request.user.is_authenticated:
-        cart_cookies = cartData(request)
-        orderItem = cart_cookies["allOrder"]
-        order = cart_cookies["order"]
-        cartItem = cart_cookies["cartTotal"]
-
-    else: 
-        cart_cookies = cartCookies(request)
-        orderItem = cart_cookies["allOrder"]
-        order = cart_cookies["order"]
-        cartItem = cart_cookies["cartTotal"]
+    data = cartData(request)
+    orderItem = data["allOrder"]
+    order = data["order"]
+    cartItem = data["cartTotal"]
 
     context = {"allOrder":orderItem, "order":order,"cartTotal":cartItem,}
     return render(request , "store/checkout.html" , context)
 
 
+
+###############################################################################################################################################################
+
+
+# other views
 def updateStore(request):
     data = json.loads(request.body)
     productId = data["productId"]
