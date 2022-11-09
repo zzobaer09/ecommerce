@@ -22,8 +22,8 @@ function addCookieItem(productId , action) {
 		}
 	}
 	if(action=="remove"){
-		cart[productId] -= 1
-		if (cart[productId]<=0){
+		cart[productId]["quantity"] -= 1
+		if (cart[productId]["quantity"]<=0){
 			delete cart[productId]
 		}
 	}
