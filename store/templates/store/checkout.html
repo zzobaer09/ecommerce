@@ -46,8 +46,8 @@
 
             <div class="box-element hidden" id="payment-info">
                 <small>Paypal</small>
-                <button id="make-payment">Make Payment</button>
-                <!-- <div id="paypal-button-container"></div> -->
+                <!-- <button id="make-payment">Make Payment</button> -->
+                <div id="paypal-button-container"></div>
                 
             </div>
         </div>
@@ -76,7 +76,7 @@
     </div>
     
     <!-- Include the PayPal JavaScript SDK -->
-    <!-- <script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD&disable-funding=credit,card"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD&disable-funding=credit,card"></script>
 
     <script>
         // Render the PayPal button into #paypal-button-container
@@ -104,7 +104,7 @@
                 });
             }
         }).render('#paypal-button-container');
-    </script> -->
+    </script>
 
     <script>
         const shipping_ = "{{order.shipping}}"
@@ -123,10 +123,11 @@
         })
 
         // triggers after submition
-        
+        /*        
         document.getElementById("make-payment").addEventListener("click" , function() {
             submitFormData()
         })
+        */
 
         
         function submitFormData() {
