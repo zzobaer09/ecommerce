@@ -3,9 +3,10 @@ from .models import *
 from django.http import JsonResponse
 import json
 import datetime
-from .utils import cartCookies , cartData
+from .utils import cartCookies , cartData , gustOrder
+###################################################################
 
-# Create your views here.
+#! Create your views here.
 
 
 def store(request):
@@ -81,24 +82,32 @@ def processOrder(request):
     if request.user.is_authenticated:
         customer = request.user.customer
         order , created = Order.objects.get_or_create(customer=customer , complete=False)
-        total  = float(data["UserData"]["total"])
-        order.transaction_id = transaction_id
-        if total == order.get_total_price:
-            order.complete = True
-        order.save()
 
-        if order.shipping == True:
-            ShippingAddress.objects.create(
-                customer = customer,
-                order=order,
-                address=__shipping__["address"],
-                city=__shipping__["city"],
-                state=__shipping__["state"],
-                zipcode=__shipping__["zipcode"],
-            )
-        
-    else:
-        print("login plz")
+    else:  
+        customer , order = gustOrder(request , data) 
+
+
+########################################################################
+    # * global oparations for shipping and complete order
+    total  = float(data["UserData"]["total"])
+    order.transaction_id = transaction_id
+    if total == float(order.get_total_price):
+        order.complete = True
+    order.save()
+    
+    if order.shipping == True:
+        ShippingAddress.objects.create(
+            customer = customer,
+            order=order,
+            address=__shipping__["address"],
+            city=__shipping__["city"],
+            state=__shipping__["state"],
+            zipcode=__shipping__["zipcode"],
+        )
+    
+
+
+
     return JsonResponse("order complete" , safe=False)
 
 

@@ -1,5 +1,9 @@
+##############################################
 import json
 from .models import *
+
+
+##########################################################
 def cartCookies(request): 
     try:
         cart_cookie = json.loads(request.COOKIES["cart"])
@@ -37,8 +41,9 @@ def cartCookies(request):
         except:
             pass
     return {"allOrder":orderItem , "order":order , "cartTotal":cartTotalItem}
-    
 
+ 
+###########################################################################
 def cartData(request):
     if request.user.is_authenticated:
         customer = request.user.customer
@@ -52,3 +57,37 @@ def cartData(request):
         cartItem = cart_cookies["cartTotal"]
         
     return {"allOrder":orderItem , "order":order , "cartTotal":cartItem}
+
+
+######################################################################
+
+def gustOrder(request , data):
+    ###########################################################
+    # * logic for a gust customer
+    name =  data["UserData"]["name"]
+    email =  data["UserData"]["email"]
+
+    customer , created = Customer.objects.get_or_create(
+        email=email
+    )
+
+    customer.name = name
+    customer.save()
+
+    #############################################################
+    # * creating an order
+    order = Order.objects.create(customer=customer , complete=False)
+
+    #############################################################
+    # * logic for creating OrderItem
+    cookie_data = cartCookies(request)
+    items = cookie_data["allOrder"]
+    for item in items:
+        product = Product.objects.get(id=item["product"]["id"])
+        order_item = OrderItem.objects.create(
+            product=product,
+            order=order,
+            quantity=item["quantity"]
+        )
+    ################################################################
+    return customer , order        
