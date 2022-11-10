@@ -1,5 +1,9 @@
+##############################################
 import json
 from .models import *
+
+
+##########################################################
 def cartCookies(request): 
     try:
         cart_cookie = json.loads(request.COOKIES["cart"])
@@ -37,8 +41,9 @@ def cartCookies(request):
         except:
             pass
     return {"allOrder":orderItem , "order":order , "cartTotal":cartTotalItem}
-    
 
+ 
+###########################################################################
 def cartData(request):
     if request.user.is_authenticated:
         customer = request.user.customer
@@ -52,3 +57,9 @@ def cartData(request):
         cartItem = cart_cookies["cartTotal"]
         
     return {"allOrder":orderItem , "order":order , "cartTotal":cartItem}
+
+
+######################################################################
+
+def gustOrder(request , data):
+    pass

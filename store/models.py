@@ -46,6 +46,7 @@ class Order(models.Model):
         orderItem = self.orderitem_set.all()
         total = sum([i.quantity for i in orderItem])
         return total
+    
     @property
     def shipping(self):
         orderItem = self.orderitem_set.all()

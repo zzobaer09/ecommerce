@@ -81,24 +81,60 @@ def processOrder(request):
     if request.user.is_authenticated:
         customer = request.user.customer
         order , created = Order.objects.get_or_create(customer=customer , complete=False)
-        total  = float(data["UserData"]["total"])
-        order.transaction_id = transaction_id
-        if total == order.get_total_price:
-            order.complete = True
-        order.save()
 
-        if order.shipping == True:
-            ShippingAddress.objects.create(
-                customer = customer,
-                order=order,
-                address=__shipping__["address"],
-                city=__shipping__["city"],
-                state=__shipping__["state"],
-                zipcode=__shipping__["zipcode"],
-            )
-        
     else:
-        print("login plz")
+        ###########################################################
+        # * logic for a gust customer
+        name =  data["UserData"]["name"]
+        email =  data["UserData"]["email"]
+
+        customer , created = Customer.objects.get_or_create(
+            email=email
+        )
+
+        customer.name = name
+        customer.save()
+
+        #############################################################
+        # * creating an order
+        order = Order.objects.create(customer=customer , complete=False)
+
+        #############################################################
+        # * logic for creating OrderItem
+        cookie_data = cartCookies(request)
+        items = cookie_data["allOrder"]
+        for item in items:
+            product = Product.objects.get(id=item["product"]["id"])
+            order_item = OrderItem.objects.create(
+                product=product,
+                order=order,
+                quantity=item["quantity"]
+            )
+        ################################################################
+            
+
+
+########################################################################
+    # * global oparations for shipping and complete order
+    total  = float(data["UserData"]["total"])
+    order.transaction_id = transaction_id
+    if total == order.get_total_price:
+        order.complete = True
+    order.save()
+    
+    if order.shipping == True:
+        ShippingAddress.objects.create(
+            customer = customer,
+            order=order,
+            address=__shipping__["address"],
+            city=__shipping__["city"],
+            state=__shipping__["state"],
+            zipcode=__shipping__["zipcode"],
+        )
+    
+
+
+
     return JsonResponse("order complete" , safe=False)
 
 
