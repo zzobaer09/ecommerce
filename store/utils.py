@@ -4,7 +4,6 @@ def cartCookies(request):
     try:
         cart_cookie = json.loads(request.COOKIES["cart"])
     except: cart_cookie = {}
-    print(cart_cookie)
 
     orderItem = []
     order = {
@@ -12,11 +11,11 @@ def cartCookies(request):
         "get_total_price":0,
         "shipping":False,
     }
-    cartItem = order["get_total_item"]
+    cartTotalItem = order["get_total_item"]
 
     for i in cart_cookie:
         try:
-            cartItem += cart_cookie[i]["quantity"]
+            cartTotalItem += cart_cookie[i]["quantity"]
 
             product = Product.objects.get(id=i)
             total = product.price * cart_cookie[i]["quantity"]
@@ -37,7 +36,7 @@ def cartCookies(request):
                 order["shipping"] = True
         except:
             pass
-    return {"allOrder":orderItem , "order":order , "cartTotal":cartItem}
+    return {"allOrder":orderItem , "order":order , "cartTotal":cartTotalItem}
     
 
 def cartData(request):

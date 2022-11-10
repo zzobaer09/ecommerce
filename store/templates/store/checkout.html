@@ -39,8 +39,8 @@
 
                     <hr>
                     <input type="submit" id="form-button" class="btn btn-success btn-block"  value="Continue">
-
                 </form>
+
             </div>
             <br>
 
@@ -89,7 +89,7 @@
             document.getElementById("payment-info").classList.remove("hidden")
         })
 
-        // triggers after payment
+        // triggers after submition
         document.getElementById("make-payment").addEventListener("click" , function() {
             submitFormData()
         })
@@ -112,6 +112,7 @@
                 "zipcode": null,
             }
 
+            // if need to ship
             if(shipping_ != "False"){
                 shippingInfo.address = form_.address.value
                 shippingInfo.city = form_.city.value
@@ -119,7 +120,8 @@
                 shippingInfo.zipcode = form_.zipcode.value
 
             }
-
+            
+            // getting data if user is anonymous
             if(user == "AnonymousUser"){
                 user_form_data.name = form_.name.value
                 user_form_data.email = form_.email.value
@@ -142,6 +144,8 @@
             .then(data=>{
                 console.log(data)
                 alert("Transaction Complete")
+                cart = {}
+                document.cookie = "cart="+JSON.stringify(cart)+";domain=;path=/"
                 window.location.href = "{% url 'store' %}"
             })
 

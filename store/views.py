@@ -37,9 +37,9 @@ def checkout(request):
     data = cartData(request)
     orderItem = data["allOrder"]
     order = data["order"]
-    cartItem = data["cartTotal"]
+    cartTotalItem = data["cartTotal"]
 
-    context = {"allOrder":orderItem, "order":order,"cartTotal":cartItem,}
+    context = {"allOrder":orderItem, "order":order,"cartTotal":cartTotalItem,}
     return render(request , "store/checkout.html" , context)
 
 
@@ -99,6 +99,6 @@ def processOrder(request):
         
     else:
         print("login plz")
-    return JsonResponse("hello world" , safe=False)
+    return JsonResponse("order complete" , safe=False)
 
 
