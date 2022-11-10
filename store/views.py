@@ -3,9 +3,10 @@ from .models import *
 from django.http import JsonResponse
 import json
 import datetime
-from .utils import cartCookies , cartData
+from .utils import cartCookies , cartData , gustOrder
+###################################################################
 
-# Create your views here.
+#! Create your views here.
 
 
 def store(request):
@@ -82,36 +83,8 @@ def processOrder(request):
         customer = request.user.customer
         order , created = Order.objects.get_or_create(customer=customer , complete=False)
 
-    else:
-        ###########################################################
-        # * logic for a gust customer
-        name =  data["UserData"]["name"]
-        email =  data["UserData"]["email"]
-
-        customer , created = Customer.objects.get_or_create(
-            email=email
-        )
-
-        customer.name = name
-        customer.save()
-
-        #############################################################
-        # * creating an order
-        order = Order.objects.create(customer=customer , complete=False)
-
-        #############################################################
-        # * logic for creating OrderItem
-        cookie_data = cartCookies(request)
-        items = cookie_data["allOrder"]
-        for item in items:
-            product = Product.objects.get(id=item["product"]["id"])
-            order_item = OrderItem.objects.create(
-                product=product,
-                order=order,
-                quantity=item["quantity"]
-            )
-        ################################################################
-            
+    else:  
+        customer , order = gustOrder(request , data) 
 
 
 ########################################################################
