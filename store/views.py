@@ -91,7 +91,7 @@ def processOrder(request):
     # * global oparations for shipping and complete order
     total  = float(data["UserData"]["total"])
     order.transaction_id = transaction_id
-    if total == order.get_total_price:
+    if total == float(order.get_total_price):
         order.complete = True
     order.save()
     
