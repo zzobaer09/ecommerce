@@ -47,6 +47,8 @@
             <div class="box-element hidden" id="payment-info">
                 <small>Paypal</small>
                 <button id="make-payment">Make Payment</button>
+                <!-- <div id="paypal-button-container"></div> -->
+                
             </div>
         </div>
 
@@ -73,6 +75,37 @@
         </div>
     </div>
     
+    <!-- Include the PayPal JavaScript SDK -->
+    <!-- <script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD&disable-funding=credit,card"></script>
+
+    <script>
+        // Render the PayPal button into #paypal-button-container
+        var total = "{{order.get_total_proce}}"
+        paypal.Buttons({
+            style:{
+                color:"blue",
+                shape: "pill"
+            },
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: parseFloat(total).toFixed(2)
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(orderData) {
+                    submitFormData()
+                });
+            }
+        }).render('#paypal-button-container');
+    </script> -->
+
     <script>
         const shipping_ = "{{order.shipping}}"
         const form_ = document.getElementById("form")
@@ -90,10 +123,12 @@
         })
 
         // triggers after submition
+        
         document.getElementById("make-payment").addEventListener("click" , function() {
             submitFormData()
         })
 
+        
         function submitFormData() {
             console.log("pyment completed");
 
